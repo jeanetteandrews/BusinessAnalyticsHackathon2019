@@ -1,0 +1,229 @@
+Churn Predictions — SFU Beedie Business Analytics Hackathon 2019
+
+```{r}
+#If packages are uninstalled, write the following line for each package:
+#"install.packages("tidyverse")"
+library(tidyverse)
+library(car)
+library(rpart)
+library(rpart.plot)
+library(nnet)
+library(randomForest)
+library(effects)
+library(forcats)
+library(lubridate)
+```
+
+Read datasets
+```{r}
+#change to location of downloaded datasets
+CityData <- read_csv("/Users/jeanette/Downloads/CITY_DATASET_ST.csv")
+AccountData <- read_csv("/Users/jeanette/Downloads/ACCOUNT_DATASET_ST.csv")
+PhLineData <- read_csv("/Users/jeanette/Downloads/PHLINE_DATASET_ST.csv")
+```
+
+Display datasets
+```{r}
+CityData
+AccountData
+PhLineData
+```
+
+Summarize datasets
+```{r}
+summary(CityData)
+summary(AccountData)
+summary(PhLineData)
+```
+
+Merge all three datasets into "LMdat"
+```{r}
+dat <- inner_join(AccountData,PhLineData,by="acc_num")
+LMdat <- inner_join(dat,CityData,by="bill_city")
+LMdat
+```
+
+Replace numeric churn variables to `YES` and `NO`
+```{r}
+LMdat$churn <- as.character(LMdat$churn)
+LMdat <- LMdat %>% mutate(churn=replace(churn,churn=="0","NO")) %>% mutate(churn=replace(churn,churn=="1","YES"))
+```
+
+Model #1 — Decision Tree
+```{r}
+Model1.RPart <- rpart(formula = churn ~ 
+                        ph_k_date
+                        +st_date
+                        +cust_age
+                        +cr_score
+                        +mon_data
+                        +disc_m8
+                        +mon_sms
+                        +mon_voice
+                        +serv_tick_m1to6
+                        +serv_tick_m7to8
+                        +data_roam
+                        +long_d_min
+                        +long_d_spend
+                        +total_pay,
+                        data = filter(LMdat, Sample == c("Estimation","Validation")),
+                        cp = 0.01,
+                        model = TRUE)
+plotcp(Model1.RPart)
+printcp(Model1.RPart)
+rpart.plot(Model1.RPart,
+           type = 0,
+           fallen.leaves = TRUE,
+           uniform = TRUE,
+           yes.text = "TRUE",
+           no.text = "FALSE",
+           cex = .8)
+```
+
+Change variables to factor or numeric
+```{r}
+LMdat$data_plan_m8 <- as.factor(LMdat$data_plan_m8)
+LMdat$ph_k_date <- as.numeric(LMdat$ph_k_date)
+LMdat$churn <- as.factor(LMdat$churn)
+LMdat$st_date <- as.numeric(LMdat$st_date)
+LMdat$bill_city <- as.factor(LMdat$bill_city)
+```
+
+Model #2 — Random Forest
+```{r}
+Model2.RanFor <- randomForest(formula = churn ~ 
+                        ph_k_date
+                        +st_date
+                        +cust_age
+                        +cr_score
+                        +mon_data
+                        +disc_m8
+                        +mon_sms
+                        +mon_voice
+                        +serv_tick_m1to6
+                        +serv_tick_m7to8
+                        +data_roam
+                        +long_d_min
+                        +long_d_spend
+                        +total_pay,
+                        data = filter(LMdat, Sample == c("Estimation","Validation")),
+                        importance = TRUE,
+                        ntree = 500, mtry = 4,
+                        na.action=na.roughfix)
+Model2.RanFor
+importance(Model2.RanFor,type = 2)
+varImpPlot(Model2.RanFor,type = 2, main = "Importance Plot")
+```
+
+Model #3 — Logistic Regression
+```{r}
+Model3.LogReg <- glm(formula = churn ~ 
+                        ph_k_date
+                        +st_date
+                        +cust_age
+                        +cr_score
+                        +mon_data
+                        +data_plan_m8
+                        +disc_m8
+                        +mon_sms
+                        +mon_voice
+                        +serv_tick_m1to6
+                        +serv_tick_m7to8
+                        +data_roam
+                        +long_d_min
+                        +long_d_spend
+                        +total_pay,
+                        data = filter(LMdat, Sample == c("Estimation","Validation")),
+                        family = binomial(logit))
+plot(allEffects(Model3.LogReg))
+#please click "Show in New Window" button to view graphs clearly
+```
+
+Model #4 — Neural Network
+```{r}
+Model4.NeuNet <- nnet(formula = churn ~ 
+                        ph_k_date
+                        +st_date
+                        +cust_age
+                        +cr_score
+                        +mon_data
+                        +data_plan_m8
+                        +disc_m8
+                        +mon_sms
+                        +mon_voice
+                        +serv_tick_m1to6
+                        +serv_tick_m7to8
+                        +data_roam
+                        +long_d_min
+                        +long_d_spend
+                        +total_pay,
+                        data = filter(LMdat, Sample == c("Estimation","Validation")),
+                        decay = 0.10, # decay parameter
+                        size = 2)
+```
+
+Lift Chart — Compares accuracy of each model
+```{r}
+lift.chart(modelList = c("Model1.RPart","Model2.RanFor","Model3.LogReg","Model4.NeuNet"),
+           data = filter(LMdat, Sample == c("Estimation","Validation")),
+           targLevel = "YES", 
+           trueResp = 4749/(30729-7685),
+           type = "cumulative", sub = c("Estimation","Validation"))
+```
+
+For the purpose of the hackathon, we chose the most accurate model, Model #1, and added `bill_city` to improve its accuracy at the 40% level. 
+(`bill_city` was previously unadded because a random forest cannot handle categorical predictors with more than 53 categories.)
+
+Improved Model #1 
+```{r}
+Model1.Improved <- rpart(formula = churn ~ 
+                        bill_city
+                        +ph_k_date
+                        +st_date
+                        +cust_age
+                        +cr_score
+                        +mon_data
+                        +disc_m8
+                        +mon_sms
+                        +mon_voice
+                        +serv_tick_m1to6
+                        +serv_tick_m7to8
+                        +data_roam
+                        +long_d_min
+                        +long_d_spend
+                        +total_pay,
+                        data = filter(LMdat, Sample == c("Estimation","Validation")),
+                        cp = 0.01,
+                        model = TRUE)
+plotcp(Model1.Improved)
+printcp(Model1.Improved)
+rpart.plot(Model1.Improved,
+           type = 0,
+           fallen.leaves = TRUE,
+           uniform = TRUE,
+           yes.text = "TRUE",
+           no.text = "FALSE",
+           cex = .8)
+```
+
+Create another lift chart to view its accuracy
+```{r}
+lift.chart(modelList = "Model1.Improved",
+           data = filter(LMdat, Sample == c("Estimation","Validation")),
+           targLevel = "YES", 
+           trueResp = 4749/(30729-7685),
+           type = "cumulative", sub = c("Estimation","Validation"))
+```
+
+Accuracy is now around 80% at the 40% level. Compared to the real results of the hackathon, our model predicted churn with 81.7% accuracy.
+
+Create a document to submit to the leaderboard
+```{r}
+LMdat$churn.Model1.RPart <- rawProbScore(model = "Model1.Improved",
+                                           data = LMdat,
+                                          targLevel = "YES")
+MeridianConsulting <- LMdat[LMdat$Sample == c("Holdout"),c("ph_num","churn.Model1.RPart")]
+names(MeridianConsulting) <- c("ph_num", "score")
+write.csv(MeridianConsulting,"/Users/jeanette/Downloads/MeridianConsulting.csv")
+MeridianConsulting
+```
