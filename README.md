@@ -1,2 +1,2 @@
 # Hackathon2019
-SFU Beedie Business Hackathon 2019
+SFU Beedie Business Analytics Hackathon 2019
