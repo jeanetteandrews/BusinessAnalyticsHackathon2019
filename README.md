@@ -1,5 +1,4 @@
-# SFU Beedie Business Analytics Hackathon 2019 <br />
-<br /> 
+# SFU Beedie Business Analytics Hackathon 2019 <br /> 
 ### Case Context
 <br />
 "For any service company that bills on a recurring basis, a key variable is the rate of churn." 
