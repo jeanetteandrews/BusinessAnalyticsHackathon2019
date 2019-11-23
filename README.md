@@ -1,6 +1,6 @@
 # SFU Beedie Business Analytics Hackathon 2019 <br /> 
 ### Case Context
-How do we predict the rate of churn? For this competition, one Canadian telecom company was struggling with customer loss. Given a [sample](https://github.com/jeanetteandrews/hackathon2019/tree/master/Datasets) of 3,750 customers, my team was tasked to predict the rate of churn of an additional 1,250 customers, as well as finding the key variables that indicate customer churn. We then presented our conclusion to judges from various businesses in Vancouver. We were given four hours to complete the hackathon. <br />
+How do we predict the rate of churn? For this competition, one Canadian telecom company was struggling with customer loss. Given a [sample](https://github.com/jeanetteandrews/hackathon2019/tree/master/Datasets) of 3,750 customers, my team was tasked to predict the rate of churn of a test set of 1,250 customers, as well as finding the key variables that indicate customer churn. We then presented our conclusion to judges from various businesses in Vancouver. We were given four hours to complete the hackathon. <br />
 
 Please view [Case_Context.pdf](https://github.com/jeanetteandrews/hackathon2019/blob/master/Case_Context.pdf) for full details of the hackathon!
 
