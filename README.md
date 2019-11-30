@@ -7,21 +7,37 @@ Please view [Case_Context.pdf](https://github.com/jeanetteandrews/hackathon2019/
 ### Process
 In order to predict the rate of churn, I used the sample of 3,750 customers to create four different machine learning models in [R](https://github.com/jeanetteandrews/hackathon2019/blob/master/R_Hackathon2019.Rmd): decision tree, random forest, logistic regression, and neural network. I then created a lift chart to compare each of the models' accuracy at the 40% sample proportion level. Our team used the decision tree, which was the most accurate model out of the four, to predict the probability of churn for the 1,250 "holdout" customers, and then submit the data to the leaderboard. 
 
-<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/decisionTree.png"
-     alt="Decision Tree"
-     style="float: left; margin-right: 10px;" />
-     
-<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/randomForest.png"
-     alt="Random Forest"
-     style="float: left; margin-right: 10px;" />
+<table width="500" border="0" cellpadding="0">
 
-<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/logisticRegressionREADME.png"
-     alt="Logistic Regression"
-     style="float: left; margin-right: 10px;" />
+<tr>
 
-<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/nueralNetwork.png"
-     alt="Neural Network"
-     style="float: left; margin-right: 10px;" />
+<td align="center" valign="center">
+<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/decisionTree.png" />
+<br />
+Decision Tree
+</td>
+
+<td align="center" valign="center">
+<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/randomForest.png" />
+<br />
+Random Forest
+</td>
+
+<td align="center" valign="center">
+<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/logisticRegressionREADME.png" />
+<br />
+Logistic Regression
+</td>
+
+<td align="center" valign="center">
+<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/nueralNetwork.png" />
+<br />
+Neural Network
+</td>
+
+</tr>
+
+</table>
 
 ### Results
 Compared to the actual churn rates, our model predicted churn with 81.7% accuracy at the 40% level. The variables that were the highest indicators of customer churn were the customer's location, days spent roaming, and total monthly bill.
