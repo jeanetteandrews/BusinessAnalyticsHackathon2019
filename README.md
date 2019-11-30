@@ -10,6 +10,18 @@ In order to predict the rate of churn, I used the sample of 3,750 customers to c
 <img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/decisionTree.png"
      alt="Decision Tree"
      style="float: left; margin-right: 10px;" />
+     
+<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/randomForest.png"
+     alt="Random Forest"
+     style="float: left; margin-right: 10px;" />
+
+<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/decisionTree.png"
+     alt="Decision Tree"
+     style="float: left; margin-right: 10px;" />
+
+<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/nueralNetwork.png"
+     alt="Neural Network"
+     style="float: left; margin-right: 10px;" />
 
 ### Results
 Compared to the actual churn rates, our model predicted churn with 81.7% accuracy at the 40% level. The variables that were the highest indicators of customer churn were the customer's location, days spent roaming, and total monthly bill.
