@@ -15,8 +15,8 @@ In order to predict the rate of churn, I used the sample of 3,750 customers to c
      alt="Random Forest"
      style="float: left; margin-right: 10px;" />
 
-<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/decisionTree.png"
-     alt="Decision Tree"
+<img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/logisticRegressionREADME.png"
+     alt="Logistic Regression"
      style="float: left; margin-right: 10px;" />
 
 <img src="https://raw.githubusercontent.com/jeanetteandrews/hackathon2019/master/Graphs/nueralNetwork.png"
