@@ -217,6 +217,11 @@ lift.chart(modelList = "Model1.Improved",
 
 Accuracy is now around 80% at the 40% level. Compared to the real results of the hackathon, our model predicted churn with 81.7% accuracy.
 
+Key variables that indicate customer churn:
+- bill_city (Customer's location)
+- data_roam (Number of days spent roaming)
+- total_pay (Monthly total pay)
+
 Create a document to submit to the leaderboard
 ```{r}
 LMdat$churn.Model1.RPart <- rawProbScore(model = "Model1.Improved",
